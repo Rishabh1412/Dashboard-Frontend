@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Assessment - Finance Dashboard Frontend
 
-## Getting Started
+A responsive financial dashboard built with Next.js 16, React 19, Tailwind CSS v4, Recharts, and Zustand. The app presents a clean finance UI with role-based transaction management, chart-driven insights, and resilient widget fallbacks so missing data does not crash the frontend.
 
-First, run the development server:
+## Initial Setup
+
+### Requirements
+
+- Node.js `20.9+`
+- npm `10+` recommended
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The root route redirects to `/dashboard`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Overview Of The Approach
 
-## Learn More
+This project uses the Next.js App Router for layout-driven composition and route-level loading states. The dashboard is split into reusable widgets, with dynamic imports used for heavier sections so skeletons can render immediately while the UI loads.
 
-To learn more about Next.js, take a look at the following resources:
+Mock finance data lives in [`data/mockData.ts`](/data/mockData.ts), while interactive transaction and role state lives in a persisted Zustand store at [`store/dashboard-store.ts`](/store/dashboard-store.ts). This keeps the UI simple to demo, while still allowing CRUD interactions without a backend.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The dashboard is also designed to fail gracefully. Data-driven components now accept optional data, sanitize what they receive, and render empty states instead of throwing when arrays or objects are missing. A route-level dashboard error boundary adds one more recovery layer for unexpected runtime issues.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Features
 
-## Deploy on Vercel
+- Responsive dashboard layout with desktop multi-column rendering and mobile tab switching
+- Theme toggle with light and dark mode support
+- Overview summary cards for total income, expense, and savings
+- Cashflow bar chart with period filtering
+- Statistics donut chart with income and expense tab switching
+- Upcoming billing timeline
+- Savings plan progress cards
+- Daily spending limit card with progress indicator
+- Transaction management with admin/viewer role toggle
+- Add, edit, delete, filter, and sort support for transactions
+- Loading skeletons for dashboard sections
+- Friendly empty states when widget data is missing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Data Safety And Missing Data Handling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The UI now protects against the most common missing-data cases:
+
+- `undefined` or `null` props passed into dashboard widgets
+- empty arrays passed to mapped components
+- incomplete numeric values used in totals, charts, and progress bars
+- malformed transaction entries coming from persisted client state
+- missing dashboard data that would otherwise break chart or list rendering
+
+When data is unavailable, components render a clear placeholder state instead of crashing the app. If something still throws unexpectedly at runtime, the dashboard route falls back to a recovery screen defined in [`app/(home)/dashboard/error.tsx`](/D:/Rishabh/arcs/intern-assessment-dashboard/app/(home)/dashboard/error.tsx).
+
+## Main Project Structure
+
+- [`app`](/app): App Router layouts, pages, loading states, and route error handling
+- [`components`](/components): Dashboard widgets, skeletons, and UI primitives
+- [`data`](/data): Mock dashboard content and typed demo data
+- [`store`](/store): Zustand state for role and transactions
+- [`types`](/types): Shared TypeScript types
+
+## Notes
+
+- The current app is frontend-focused and uses mock data rather than a live API.
+- Transaction changes persist in the browser through Zustand persistence.
+- The widget boundaries make it straightforward to replace mock data with API-backed data.
