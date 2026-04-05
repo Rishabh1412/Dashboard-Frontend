@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import type { ComponentType } from "react";
 import { useState } from "react";
 import { MdOutlineNotifications, MdSearch } from "react-icons/md";
+import Image from "next/image";
 
 type DashboardTab = {
   id: number;
@@ -68,16 +69,19 @@ const Page = () => {
           >
             <div className="absolute w-10 h-10 rounded-full border-2 border-primary opacity-0 group-hover:animate-[ping-slow_1.5s_ease-out_infinite] pointer-events-none"></div>
 
-            <img
+            <Image
               src="/pfp.jpeg"
               alt="Your profile"
+              width={40}
+              height={40}
               className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-900 shadow-inner group-hover:border-gray-200 dark:group-hover:border-gray-700 transition-all duration-300 ease-out"
+              priority 
             />
 
             <div className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-success rounded-full border-2 border-white dark:border-gray-900 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 ease-spring"></div>
 
             <div className="pointer-events-none absolute top-full right-0 w-max translate-y-2 mt-0.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-              <div className="flex flex-col items-center rounded-xl bg-gray-900 px-4 py-1.5 shadow-xl dark:bg-white">
+              <div className="flex flex-col items-center rounded-xl bg-gray-900 px-4 py-1 shadow-xl dark:bg-white">
                 <p className="text-xs font-bold tracking-tight text-white dark:text-gray-900">
                   {profileName}
                 </p>
